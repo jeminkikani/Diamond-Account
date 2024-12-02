@@ -9,7 +9,6 @@ const Login = ({ setFirst }) => {
     const [formData, setFormData] = useState({ login_id: '', password: '' });
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
-    console.log(loading, "loading");
 
     const handleSubmit = (e) => {
         e.preventDefault();

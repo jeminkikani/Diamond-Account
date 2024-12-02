@@ -19,9 +19,7 @@ const AddBroker = () => {
         .then((res) => {
           if (res == 200 || 201) {
             toast.success("Data Added Successfully")
-          }
-          console.log(res,"res");
-          
+          }          
           // alert('Broker added successfully!');
           setFormData({ name: '', mobile_no: '' });
         })

@@ -16,7 +16,8 @@ const AddEntryincome = () => {
         totalPayment: '',
         percentage: '',
         brokerage: '',
-        diamondType: ''
+        diamondType: '',
+        entryType : "incoming"
     });
     const [data, setData] = useState([])
     const toast = useRef(null);
@@ -96,7 +97,8 @@ const AddEntryincome = () => {
                     totalPayment: '',
                     percentage: '',
                     brokerage: '',
-                    diamondType: ''
+                    diamondType: '',
+                    entryType : "incoming"
                 });
             })
             .catch((err) => {

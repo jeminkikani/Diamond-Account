@@ -12,13 +12,15 @@ const ShowEntryIncome = () => {
   const [dateRange, setDateRange] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
   useEffect(() => {
-    getBroker();
+    getEntry();
   }, [dateRange]);
 
-  const getBroker = () => {
+  const getEntry = () => {
+    
     axios
-      .get('https://diamond-be.onrender.com/api/v1/daimond/get-diamond/')
+      .get('https://diamond-be.onrender.com/api/v1/daimond/get-diamond?entryType=incoming')
       .then((res) => {
+        
         const entries = res.data.data;
 
         const filteredEntries = dateRange

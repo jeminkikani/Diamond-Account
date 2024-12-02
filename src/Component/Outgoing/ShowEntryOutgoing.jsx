@@ -21,7 +21,7 @@ const ShowEntryOutgoing = () => {
 
   const ShowEntry = () => {
     axios
-      .get('https://diamond-be.onrender.com/api/v1/daimond/get-diamond/')
+      .get('https://diamond-be.onrender.com/api/v1/daimond/get-diamond?entryType=outgoing')
       .then((res) => {
         const entries = res.data.data;
 
