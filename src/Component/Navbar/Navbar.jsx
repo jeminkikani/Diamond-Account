@@ -94,23 +94,42 @@ const Navbar = () => {
                         <li>
                             <details>
                                 <summary class="flex items-center w-full p-2 text-base text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-black dark:hover:bg-red-500 hover:text-white cursor-pointer">
-                                    <span class="flex-1 ms-3 text-left rtl:text-right whitespace-nowrap">Diamond</span>
+                                    <span class="flex-1 ms-3 text-left rtl:text-right whitespace-nowrap">income</span>
                                     <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
                                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4" />
                                     </svg>
                                 </summary>
                                 <ul class="py-2 space-y-2">
                                     <li>
-                                        <Link to={'/addEntry'} href="#" class={`flex items-center  ${linkStyle('/addEntry')} w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-black dark:hover:bg-red-500 hover:text-white`}>Add Entry</Link>
+                                        <Link to={'/addEntryincome'} href="#" class={`flex items-center  ${linkStyle('/addEntryincome')} w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-black dark:hover:bg-red-500 hover:text-white`}>Add Entry</Link>
                                     </li>
                                     <li>
-                                        <Link to={'/showEntry'} href="#" class={`flex  ${linkStyle('/showEntry')} items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-black dark:hover:bg-red-500 hover:text-white`}>Show Entry</Link>
+                                        <Link to={'/showEntryincome'} href="#" class={`flex  ${linkStyle('/showEntryincome')} items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-black dark:hover:bg-red-500 hover:text-white`}>Show Entry</Link>
                                     </li>
 
                                 </ul>
                             </details>
                         </li>
 
+                        <li>
+                            <details>
+                                <summary class="flex items-center w-full p-2 text-base text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-black dark:hover:bg-red-500 hover:text-white cursor-pointer">
+                                    <span class="flex-1 ms-3 text-left rtl:text-right whitespace-nowrap">Outgoing</span>
+                                    <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4" />
+                                    </svg>
+                                </summary>
+                                <ul class="py-2 space-y-2">
+                                    <li>
+                                        <Link to={'/addEntryoutgoing'} href="#" class={`flex items-center  ${linkStyle('/addEntryoutgoing')} w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-black dark:hover:bg-red-500 hover:text-white`}>Add Entry</Link>
+                                    </li>
+                                    <li>
+                                        <Link to={'/showEntryoutgoing'} href="#" class={`flex  ${linkStyle('/showEntryoutgoing')} items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-black dark:hover:bg-red-500 hover:text-white`}>Show Entry</Link>
+                                    </li>
+
+                                </ul>
+                            </details>
+                        </li>
                         <li>
                             <details>
                                 <summary class="flex items-center w-full p-2 text-base text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-black dark:hover:bg-red-500 hover:text-white cursor-pointer">

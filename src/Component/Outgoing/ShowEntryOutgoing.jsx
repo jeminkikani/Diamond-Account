@@ -1,21 +1,25 @@
 import axios from 'axios';
-import React, { useEffect, useState } from 'react';
-import Swal from 'sweetalert2';
 import { Calendar } from 'primereact/calendar';
+import React, { useEffect, useState } from 'react'
+import Swal from 'sweetalert2';
 
-const ShowEntry = () => {
+const ShowEntryOutgoing = () => {
+
+
+
   const [diamondEntry, setDiamondEntry] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const brokersPerPage = 8;
   const [showModal, setShowModal] = useState(false);
   const [selectedRow, setSelectedRow] = useState(null);
   const [dateRange, setDateRange] = useState(null);
-
+  const [searchTerm, setSearchTerm] = useState('');
+  
   useEffect(() => {
-    getBroker();
+    ShowEntry();
   }, [dateRange]);
 
-  const getBroker = () => {
+  const ShowEntry = () => {
     axios
       .get('https://diamond-be.onrender.com/api/v1/daimond/get-diamond/')
       .then((res) => {
@@ -79,29 +83,30 @@ const ShowEntry = () => {
     });
   };
 
+
   return (
-
-
-    <div className="flex flex-col px-14 pt-5 ml-[250px] mt-24">
+    <div>
+      <div className="flex flex-col px-14 pt-5 ml-[250px] mt-24">
       <div className="-m-1.5 overflow-x-auto">
         <div className="p-1.5 min-w-full inline-block align-middle">
           <div className="border rounded-lg divide-y divide-gray-200 dark:border-neutral-700 dark:divide-neutral-700">
             <div className="py-3 px-4">
               <div className="relative max-w-[40rem] flex">
                 <label className="sr-only">Search</label>
-                <input
+                {/* <input
                   type="text"
                   name="hs-table-with-pagination-search"
                   id="hs-table-with-pagination-search"
                   className="py-2 mr-3 px-3 ps-9 block w-full shadow-sm rounded-lg text-sm focus:z-10 focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none border border-grey dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
                   placeholder="Search for items"
-                />
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                /> */}
                 <Calendar
                   selectionMode="range"
                   value={dateRange}
                   onChange={(e) => setDateRange(e.value)}
                   placeholder="Select Date Range"
-                  className="border-2 w-full rounded-md py-2 px-3"
+                  className="border-2 w-1/2 rounded-md py-2 px-3"
                   showButtonBar
                   numberOfMonths={2}
                 />
@@ -182,7 +187,7 @@ const ShowEntry = () => {
       {showModal && selectedRow && (
         <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 z-50">
           <div className="bg-white dark:bg-white p-6 rounded-lg max-w-lg w-full">
-            <h2 className="text-lg font-semibold mb-4 bg-red-500 p-2 rounded-lg text-gray-900 dark:text-white">{selectedRow.partyName} Details</h2>
+            <h2 className="text-lg font-semibold mb-4 bg-red-500 text-center uppercase p-2 rounded-lg text-gray-900 dark:text-white">{selectedRow.partyName} Details</h2>
             <div>
               <label className='block'>Weight</label>
               <input className="text-sm border border-gray-600 p-[10px] rounded-lg w-full mt-2 text-gray-700 dark:text-gray-600" value={selectedRow.weight}></input>
@@ -217,7 +222,8 @@ const ShowEntry = () => {
         </div>
       )}
     </div>
-  );
+    </div>
+  )
 }
 
-export default ShowEntry;
+export default ShowEntryOutgoing

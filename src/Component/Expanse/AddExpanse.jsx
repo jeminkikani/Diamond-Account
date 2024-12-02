@@ -13,13 +13,9 @@ const AddExpanse = () => {
     try {
       axios.post('https://diamond-be.onrender.com/api/v1/expense/add-expense', formData)
         .then((res) => {
-          console.log(res, "res");
-
           if (res == 200 || 201) {
             toast.success("Expense Added Successfully")
           }
-          console.log(res, "res");
-
           // alert('Broker added successfully!');
           setFormData({ purchase_Date: '', description: '', amount: '' });
         })

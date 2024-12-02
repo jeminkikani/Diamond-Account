@@ -1,29 +1,35 @@
 import { Route, Routes, useNavigate } from 'react-router-dom';
 import './App.css';
-import DiamondForm from './Component/Diamond Form/DiamondForm';
 import Navbar from './Component/Navbar/Navbar';
-import ShowEntry from './Component/Entry/ShowEntry';
-import AddBroker from './Component/AddBroker/AddBroker';
-import GetBroker from './GetBroker/GetBroker';
+
 import { ProgressSpinner } from 'primereact/progressspinner';
 import { useState, useEffect } from 'react';
 import Dashboard from './Component/Dashboard/Dashboard';
 import Login from './Component/Login/Login';
 import AddExpanse from './Component/Expanse/AddExpanse';
 import GetExpanse from './Component/Expanse/GetExpanse';
+import AddEntryincome from './Component/Income/AddEntryincome';
+import ShowEntryIncome from './Component/Income/ShowEntryincome';
+import AddEntryOutgoing from './Component/Outgoing/AddEntryOutgoing';
+import ShowEntryOutgoing from './Component/Outgoing/ShowEntryOutgoing';
+import GetBroker from './Component/Broker/GetBroker';
+import AddBroker from './Component/Broker/AddBroker';
 
 function App() {
   const [loading, setLoading] = useState(false);
   const [first, setFirst] = useState(sessionStorage.getItem("data") || "");
 
   useEffect(() => {
-    setLoading(true);
-    const timer = setTimeout(() => {
+    const checkLoading = async () => {
+      setLoading(true);
+      // Simulate loading only if necessary (e.g., check session or preload data)
+      await new Promise(resolve => setTimeout(resolve, 2000)); // Simulated delay
       setLoading(false);
-    }, 5000);
-
-    return () => clearTimeout(timer);
+    };
+  
+    checkLoading();
   }, []);
+  
 
   return (
     <>
@@ -39,12 +45,15 @@ function App() {
           ) : (
             <Routes>
               <Route path='/' element={<Dashboard />} />
-              <Route path="/addEntry" element={<DiamondForm />} /> 
-              <Route path="/showEntry" element={<ShowEntry />} />
+              <Route path="/addEntryincome" element={<AddEntryincome />} /> 
+              <Route path="/showEntryincome" element={<ShowEntryIncome />} />
               <Route path="/addbroker" element={<AddBroker />} />
               <Route path="/getbroker" element={<GetBroker />} />
               <Route path='/addexpanse' element={<AddExpanse />} />
               <Route path='/getexpanse' element={<GetExpanse />} />
+              <Route path='/addEntryoutgoing' element={<AddEntryOutgoing />} />
+              <Route path='/showEntryoutgoing' element={<ShowEntryOutgoing />} />
+
             </Routes>
           )}
         </>

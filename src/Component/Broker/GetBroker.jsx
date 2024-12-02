@@ -1,65 +1,33 @@
-import React, { useEffect, useState } from 'react'
+import axios from 'axios';
+import React, { useEffect, useState } from 'react';
 import { Dialog } from 'primereact/dialog';
 import Swal from 'sweetalert2'
-import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-const GetExpanse = () => {
-  const [expanse, setExpanse] = useState([]);
+const GetBroker = () => {
+  const [broker, setBroker] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const brokersPerPage = 8; // Number of brokers to display per page
   const [visible, setVisible] = useState(false);
   const [selectedBroker, setSelectedBroker] = useState({ name: '', mobile_no: '', _id: '' });
-  const [searchTerm, setSearchTerm] = useState('');
-  const [selectedExpanse, setSelectedExpanse] = useState(null); // Track selected expanse for editing
+  const [searchTerm, setSearchTerm] = useState(''); // Add searchTerm state
 
 
   useEffect(() => {
-    getExpanse();
+    getBroker();
   }, []);
 
-  const getExpanse = () => {
+  const getBroker = () => {
     axios
-      .get('https://diamond-be.onrender.com/api/v1/expense/get-expense')
+      .get('https://diamond-be.onrender.com/api/v1/broker/get-brokers')
       .then((res) => {
-        setExpanse(res.data.data);
+        setBroker(res.data.data);
       });
   };
 
-  const filteredBrokers = expanse.filter((b) =>
-    (b.description && b.description.toLowerCase().includes(searchTerm)) ||
-    (b.amount && b.amount.toString().includes(searchTerm))
-  );
 
-  const indexOfLastExpanse = currentPage * brokersPerPage;
-  const indexOfFirstExpanse = indexOfLastExpanse - brokersPerPage;
-  const currentExpanse = filteredBrokers.slice(indexOfFirstExpanse, indexOfLastExpanse);
-
-  // Calculate total pages
-  const totalPages = Math.ceil(filteredBrokers.length / brokersPerPage);
-
-
-  // Handle page change
-  const handlePageChange = (pageNumber) => {
-    setCurrentPage(pageNumber);
-  };
-
-  // Handle Next and Previous
-  const handleNext = () => {
-    if (currentPage < totalPages) setCurrentPage(currentPage + 1);
-  };
-
-  const handlePrevious = () => {
-    if (currentPage > 1) setCurrentPage(currentPage - 1);
-  };
-
-  // const openUpdateDialog = (broker) => {
-  //   setSelectedBroker(broker);  // Set the selected broker data
-  //   setVisible(true);
-  // };
-
-  const deleteExpanse = (id) => {
+  const deleteBroker = (id) => {
     Swal.fire({
       title: "Are you sure?",
       text: "You won't be able to revert this!",
@@ -71,15 +39,11 @@ const GetExpanse = () => {
     }).then((result) => {
       if (result.isConfirmed) {
         axios
-          .delete(`https://diamond-be.onrender.com/api/v1/expense/delete-expense/${id}`)
-          .then((res) => {
-
-            if (res.status == 200 || res.status == 201) {
-              toast.success("Expanse Delete Successfully")
-            }
+          .delete(`https://diamond-be.onrender.com/api/v1/broker/delete-brokers/${id}`)
+          .then(() => {
             // Update the broker list by removing the deleted broker
-            setExpanse(expanse.filter((item) => item.id !== id));
-            getExpanse()
+            setBroker(broker.filter((item) => item.id !== id));
+            getBroker()
           })
           .catch((error) => {
             console.error("Error deleting broker:", error);
@@ -95,67 +59,113 @@ const GetExpanse = () => {
 
   }
 
-  const handleEditInputChange = (e) => {
-    const { name, value } = e.target;
-    setSelectedExpanse({ ...selectedExpanse, [name]: value });
+  const openUpdateDialog = (broker) => {
+    setSelectedBroker(broker);  // Set the selected broker data
+    setVisible(true);
   };
 
-  const saveExpanse = () => {
+
+  const filteredBrokers = broker.filter((b) =>
+    b.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    b.mobile_no.toString().includes(searchTerm)
+  );
+
+  // Calculate pagination indices
+  const indexOfLastBroker = currentPage * brokersPerPage;
+  const indexOfFirstBroker = indexOfLastBroker - brokersPerPage;
+  const currentBrokers = filteredBrokers.slice(indexOfFirstBroker, indexOfLastBroker);
+
+  // Calculate total pages
+  const totalPages = Math.ceil(filteredBrokers.length / brokersPerPage);
+
+  // Handle page change
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
+  // Handle Next and Previous
+  const handleNext = () => {
+    if (currentPage < totalPages) setCurrentPage(currentPage + 1);
+  };
+
+  const handlePrevious = () => {
+    if (currentPage > 1) setCurrentPage(currentPage - 1);
+  };
+
+
+  const handleEditInputChange = (e) => {
+    const { name, value } = e.target;
+    setSelectedBroker({ ...selectedBroker, [name]: value }); // Update selectedBroker instead of selectedExpanse
+  };
+  
+  const saveBroker = (e) => {
+    e.preventDefault(); // Prevent page reload
     axios
-      .put(`https://diamond-be.onrender.com/api/v1/expense/update-expense/${selectedExpanse._id}`, selectedExpanse)
+      .put(`https://diamond-be.onrender.com/api/v1/broker/update-broker/${selectedBroker._id}`, selectedBroker)
       .then((res) => {
-        toast.success('Expanse updated successfully!');
-        setVisible(false); // Close dialog
-        getExpanse(); // Refresh data
+        Swal.fire({
+          title: 'Success!',
+          text: 'Broker updated successfully.',
+          icon: 'success',
+        });
+        setVisible(false); // Close the dialog
+        getBroker(); // Refresh the list
       })
       .catch((error) => {
-        toast.error('Error updating expanse');
-        console.error(error);
+        console.error('Error updating broker:', error);
+        Swal.fire({
+          title: 'Error!',
+          text: 'Failed to update broker.',
+          icon: 'error',
+        });
       });
   };
+  
+
 
 
   return (
-    <div>
-      <ToastContainer position="top-right" />
 
-      <Dialog
-        header="Edit Expanse"
-        visible={visible}
-        onHide={() => setVisible(false)}
-        style={{ width: '50vw' }}
-        footer={
-          <div>
-            <button onClick={saveExpanse} className="bg-red-500 hover:bg-red-800 text-white px-4 py-2 rounded-lg mr-3">Save</button>
-            <button onClick={() => setVisible(false)} className="bg-gray-300 px-4 py-2 rounded-lg">Cancel</button>
-          </div>
-        }
-      >
-        {selectedExpanse && (
-          <div className="flex flex-col space-y-4">
-            <label>
-              Description:
+    <>
+ <ToastContainer position="top-right" />
+      <div className="card flex justify-content-center">
+        <Dialog visible={visible} model style={{ width: '35vw' }} onHide={() => { if (!visible) return; setVisible(false); }}>
+          <form className="max-w-md mx-auto mt-3 p-5 border rounded" >
+            <h1 className="text-xl mb-3">Update Broker (દલાલ અપડેટ કરો )</h1>
+
+            <div className='relative z-0 w-full mb-5 group'>
               <input
                 type="text"
-                name="description"
-                value={selectedExpanse.description}
-                onChange={handleEditInputChange}
-                className="block w-full px-4 py-2 mt-1 border rounded-lg"
+                name="name"
+                placeholder=" "
+                required
+                // value={formData.name}
+                // onChange={handleChange}
+                className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none  dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+
               />
-            </label>
-            <label>
-              Amount:
+              <label for="floating_password" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Broker Name(દલાલનું નામ)</label>
+            </div>
+
+            <div className='relative z-0 w-full mb-5 group'>
               <input
                 type="number"
-                name="amount"
-                value={selectedExpanse.amount}
-                onChange={handleEditInputChange}
-                className="block w-full px-4 py-2 mt-1 border rounded-lg"
+                placeholder=" "
+                name="mobile_no"
+                // value={formData.mobile_no}
+                required
+                // onChange={handleChange}
+                className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
               />
-            </label>
-          </div>
-        )}
-      </Dialog>
+              <label for="floating_password" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Mobile No (મોબાઇલ નં)</label>
+            </div>
+
+            <button type="submit" className="w-full p-2 bg-red-600 hover:bg-red-500 text-white rounded">
+              Submit
+            </button>
+          </form>
+        </Dialog>
+      </div>
       <div className="flex flex-col px-14 pt-5 ml-[250px] mt-24">
         <div className="-m-1.5 overflow-x-auto">
           <div className="p-1.5 min-w-full inline-block align-middle">
@@ -183,34 +193,28 @@ const GetExpanse = () => {
                 <table className="min-w-full divide-y divide-gray-200 dark:divide-neutral-700">
                   <thead className="bg-red-500">
                     <tr className='bg-red-500'>
-                      <th scope="col" className="px-6 py-3 text-start text-xs font-bold text-white uppercase dark:text-white ">Date(તારીખ)</th>
-                      <th scope="col" className="px-6 py-3 text-start text-xs font-bold text-white uppercase dark:text-white">Description (વર્ણન)</th>
-                      <th scope="col" className="px-6 py-3 text-start text-xs font-medium text-white uppercase dark:text-white">Payment(ચૂકવણી)</th>
+                      <th scope="col" className="px-6 py-3 text-start text-xs font-bold text-white uppercase dark:text-white ">Broker Name (દલાલનું નામ)</th>
+                      <th scope="col" className="px-6 py-3 text-start text-xs font-bold text-white uppercase dark:text-white">Mobile No (મોબાઇલ નં)</th>
                       <th scope="col" className="px-6 py-3 text-end text-xs font-medium text-white uppercase dark:text-white">Action</th>
-
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-200 dark:divide-neutral-700">
-                    {currentExpanse.map((val, index) => (
+                    {currentBrokers.map((val, index) => (
                       <tr key={index}>
-                        <td className='px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-neutral-500"'>{new Date(val.purchase_Date).toLocaleDateString('en-GB')}</td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-neutral-500">{val.description}</td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-neutral-500">{val.amount}</td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-neutral-500">{val.name}</td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-neutral-500">{val.mobile_no}</td>
                         <td className="px-6 py-4 whitespace-nowrap text-end text-sm font-medium">
                           <button
                             type="button"
                             className="inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent text-blue-600 hover:text-blue-800 focus:outline-none focus:text-blue-800 disabled:opacity-50 disabled:pointer-events-none dark:text-blue-500 dark:hover:text-blue-400 dark:focus:text-blue-400"
-                            onClick={() => deleteExpanse(val._id)}                 >
+                            onClick={() => deleteBroker(val._id)}                        >
                             <span className="pi pi-trash mr-3" ></span>
                           </button>
 
                           <button
                             type="button"
                             className="inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent text-blue-600 hover:text-blue-800 focus:outline-none focus:text-blue-800 disabled:opacity-50 disabled:pointer-events-none dark:text-blue-500 dark:hover:text-blue-400 dark:focus:text-blue-400"
-                            onClick={() => {
-                              setSelectedExpanse(val);
-                              setVisible(true);
-                            }}                    >
+                            onClick={() => openUpdateDialog(val)}                        >
                             <span className="pi pi-pen-to-square"></span>
                           </button>
 
@@ -245,8 +249,8 @@ const GetExpanse = () => {
           </div>
         </div>
       </div>
-    </div>
-  )
-}
+    </>
+  );
+};
 
-export default GetExpanse
+export default GetBroker;
