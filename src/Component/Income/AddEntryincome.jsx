@@ -83,8 +83,6 @@ const AddEntryincome = () => {
 
         axios.post('https://diamond-be.onrender.com/api/v1/daimond/add-diamond', formData)
             .then((res) => {
-                // alert('Broker added successfully!');
-                console.log(res, "tres");
 
                 if (res == 200 || res == 201 || res == 204) {
                     toast.success("Data Added Successfully")
@@ -143,17 +141,10 @@ const AddEntryincome = () => {
     };
 
     const calculateBrokerage = (percentageValue) => {
-        console.log(percentageValue, "pervalue");
 
         const totalPayment = parseFloat(formData.totalPayment) || 0;
-        // const percentage = parseFloat(percentageValue) || 0;
-        // const brokerage = (totalPayment * percentage) / 100;
-        // const amountAfterBrokerage = totalPayment - brokerage
         const brokerage6Percent = (totalPayment * percentageValue) / 100;
         const amountAfter6Percent = totalPayment - brokerage6Percent;
-        console.log(amountAfter6Percent, "amount after");
-
-        // Then deduct 1% on the amount after 6% deduction
         const brokerage = (amountAfter6Percent * 1) / 100;
         const amountAfterBrokerage = amountAfter6Percent - brokerage;
         const diamondPayment = amountAfterBrokerage
