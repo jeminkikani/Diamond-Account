@@ -206,7 +206,7 @@ const ShowEntryIncome = () => {
             </div>
             <div>
               <label className='block'>Percentage</label>
-              <input className="text-sm border border-gray-600 p-[10px] rounded-lg w-full mt-2 text-gray-700 dark:text-gray-600" value={selectedRow.percentage}></input>
+              <input className="text-sm border border-gray-600 p-[10px] rounded-lg w-full mt-2 text-gray-700 dark:text-gray-600" value={selectedRow.diamondPaymentPercentage}></input>
             </div>
             <div>
               <label className='block'>Brokerage</label>

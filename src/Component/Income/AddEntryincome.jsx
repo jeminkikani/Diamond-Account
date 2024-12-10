@@ -17,7 +17,8 @@ const AddEntryincome = () => {
         percentage: '',
         brokerage: '',
         diamondType: '',
-        entryType : "incoming"
+        entryType: "incoming",
+        days: '',
     });
     const [data, setData] = useState([])
     const toast = useRef(null);
@@ -83,7 +84,9 @@ const AddEntryincome = () => {
         axios.post('https://diamond-be.onrender.com/api/v1/daimond/add-diamond', formData)
             .then((res) => {
                 // alert('Broker added successfully!');
-                if (res == 200 || res == 201) {
+                console.log(res, "tres");
+
+                if (res == 200 || res == 201 || res == 204) {
                     toast.success("Data Added Successfully")
                 }
                 setFormData({
@@ -98,7 +101,8 @@ const AddEntryincome = () => {
                     percentage: '',
                     brokerage: '',
                     diamondType: '',
-                    entryType : "incoming"
+                    entryType: "incoming",
+                    days: ''
                 });
             })
             .catch((err) => {
@@ -123,8 +127,10 @@ const AddEntryincome = () => {
         if (name === 'weight' || name === 'price') {
             calculateTotalPayment(name, value);
         }
-        if (name === 'percentage') {
+        if (name === 'diamondPaymentPercentage') {
             calculateBrokerage(value);
+        } if (name == "percentage") {
+            calculateBrokerage(value)
         }
     };
 
@@ -132,18 +138,32 @@ const AddEntryincome = () => {
         const weight = fieldName === 'weight' ? parseFloat(fieldValue) || 0 : parseFloat(formData.weight) || 0;
         const price = fieldName === 'price' ? parseFloat(fieldValue) || 0 : parseFloat(formData.price) || 0;
         const totalPayment = weight * price;
+
         setFormData((prevData) => ({ ...prevData, totalPayment }));
     };
 
     const calculateBrokerage = (percentageValue) => {
+        console.log(percentageValue, "pervalue");
+
         const totalPayment = parseFloat(formData.totalPayment) || 0;
-        const percentage = parseFloat(percentageValue) || 0;
-        const brokerage = (totalPayment * percentage) / 100;
-        const amountAfterBrokerage = totalPayment - brokerage;
+        // const percentage = parseFloat(percentageValue) || 0;
+        // const brokerage = (totalPayment * percentage) / 100;
+        // const amountAfterBrokerage = totalPayment - brokerage
+        const brokerage6Percent = (totalPayment * percentageValue) / 100;
+        const amountAfter6Percent = totalPayment - brokerage6Percent;
+        console.log(amountAfter6Percent, "amount after");
+
+        // Then deduct 1% on the amount after 6% deduction
+        const brokerage = (amountAfter6Percent * 1) / 100;
+        const amountAfterBrokerage = amountAfter6Percent - brokerage;
+        const diamondPayment = amountAfterBrokerage
+
+
         setFormData((prevData) => ({
             ...prevData,
             brokerage,
             amountAfterBrokerage,
+            diamondPayment
         }));
     };
 
@@ -167,6 +187,9 @@ const AddEntryincome = () => {
                     </div>
 
                     <select placeholder="select diamond type" name="diamondType" className='w-full text-gray-900 py-2.5 border-black border-0 border-b-2 mb-4' value={formData.diamondType} onChange={handleInputChange}>
+                    <option value="" disabled selected hidden>
+                                 Select Diamond Type
+                                </option>
                         {
                             valdropdown.map((val) => {
                                 return (
@@ -190,9 +213,13 @@ const AddEntryincome = () => {
 
                     <div class="grid md:grid-cols-2 md:gap-6">
 
+                        {/* <div class="relative z-0 w-full mb-5 group">
+                            <input type="number" name="totalPayment" id="floating_email" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-black dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" value={formData.diamondPaymentPercentage} onChange={handleInputChange}  required/>
+                            <label for="floating_email" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Brokerage Percentage(ટકાવારી)</label>
+                        </div> */}
                         <div class="relative z-0 w-full mb-5 group">
-                            <input type="number" name="totalPayment" id="floating_email" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-black dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" value={formData.percentage} onChange={handleInputChange}  />
-                            <label for="floating_email" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Percentage(ટકાવારી)</label>
+                            <input type="number" name="diamondPaymentPercentage" id="floating_email" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-black dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " value={formData.diamondPaymentPercentage} onChange={handleInputChange} required />
+                            <label for="floating_email" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Brokerage Percentage(ટકાવારી)</label>
                         </div>
                         <div class="relative z-0 w-full mb-5 group">
                             <input type="text" name="partyName" id="" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-black dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " value={formData.partyName} onChange={handleInputChange} required />
@@ -201,37 +228,42 @@ const AddEntryincome = () => {
                     </div>
 
                     <div class="grid md:grid-cols-2 md:gap-6">
-                        <div class="relative z-0 w-full mb-5 group">
-                            <select placeholder="helo" name="brokerName" value={formData._id} onChange={handleInputChange} className='block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer'>
-                                {
-                                    data.map((val) => {
-                                        return (
+                        <div class="relative z-0 w-full mb-3 group">
 
-                                            <option key={val._id} value={val._id} className='peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6'>
-                                                {val.name}
-                                            </option>
-                                        )
-                                    })
-                                }
-                            </select>
-
+                            <div class="relative z-0 w-full  group">
+                                <input type="date" name="paymentDate" id="floating_first_name" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-black dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" value={formData.paymentDate} onChange={handleInputChange} placeholder="Date" required />
+                                <label for="floating_first_name" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Payment(ચુકવણીની તારીખ)</label>
+                            </div>
                             {/* <input type="password" name="repeat_password" id="floating_repeat_password" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required /> */}
                             {/* <label for="floating_repeat_password" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Broker Name(દલાલનું નામ)</label> */}
                         </div>
-                        <div class="relative z-0 w-full mb-5 group">
-                            <input type="number" name="price" id="floating_email" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-black dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " value={formData.price} onChange={handleInputChange} required />
-                            <label for="floating_email" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Days</label>
+                        <div class="relative z-0 w-full  group">
+                            <input type="number" name="days" id="days" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-black dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " value={formData.days} onChange={handleInputChange} required />
+                            <label for="days" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Days</label>
                         </div>
                     </div>
+
+                    <select placeholder="helo" name="brokerName" value={formData._id} onChange={handleInputChange} className='block mb-3 py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer'>
+                        <option value="" disabled selected hidden>
+                            Select a broker
+                        </option>
+                        {
+                            data.map((val) => {
+                                return (
+
+                                    <option key={val._id} value={val._id} className='peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6'>
+                                        {val.name}
+                                    </option>
+                                )
+                            })
+                        }
+                    </select>
                     <div class="grid md:grid-cols-2 md:gap-6">
-                        <div class="relative z-0 w-full mb-5 group">
-                            <input type="date" name="paymentDate" id="floating_first_name" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-black dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" value={formData.paymentDate} onChange={handleInputChange} placeholder="Date" required />
-                            <label for="floating_first_name" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Payment(ચુકવણીની તારીખ)</label>
-                        </div>
-                        <div class="relative z-0 w-full mb-5 group">
+
+                        {/* <div class="relative z-0 w-full mb-5 group">
                             <input type="text" name="percentage" id="percentage" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-black dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " value={formData.percentage} onChange={handleInputChange} required />
                             <label for="percentage" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Percentage(ટકાવારી)</label>
-                        </div>
+                        </div> */}
                     </div>
                     <div class="grid md:grid-cols-2 md:gap-6">
                         <div class="relative z-0 w-full mb-5 group">
@@ -244,8 +276,8 @@ const AddEntryincome = () => {
                         </div>
                     </div>
                     <div class="relative z-0 w-full mb-5 group">
-                        <input type="number" name="price" id="floating_email" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-black dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " value={formData.price} onChange={handleInputChange} required />
-                        <label for="floating_email" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Total Payment</label>
+                        <input type="number" name="final ampount" id="final ampount" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-black dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " value={formData.diamondPayment} onChange={handleInputChange} readOnly />
+                        <label for="final ampount" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Total Payment</label>
                     </div>
                     <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">Submit</button>
                 </form>

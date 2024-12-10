@@ -92,16 +92,24 @@ const GetBroker = () => {
     if (currentPage > 1) setCurrentPage(currentPage - 1);
   };
 
-
   const handleEditInputChange = (e) => {
     const { name, value } = e.target;
-    setSelectedBroker({ ...selectedBroker, [name]: value }); // Update selectedBroker instead of selectedExpanse
+    setSelectedBroker({ ...selectedBroker, [name]: value }); // Dynamically update selectedBroker
   };
-  
+
+
   const saveBroker = (e) => {
     e.preventDefault(); // Prevent page reload
+    if (!selectedBroker.name || !selectedBroker.mobile_no) {
+      Swal.fire({
+        title: 'Error!',
+        text: 'All fields are required.',
+        icon: 'error',
+      });
+      return;
+    }
     axios
-      .put(`https://diamond-be.onrender.com/api/v1/broker/update-broker/${selectedBroker._id}`, selectedBroker)
+      .put(`https://diamond-be.onrender.com/api/v1/broker/update-brokers/${selectedBroker._id}`, selectedBroker)
       .then((res) => {
         Swal.fire({
           title: 'Success!',
@@ -120,51 +128,55 @@ const GetBroker = () => {
         });
       });
   };
-  
+
+
 
 
 
   return (
 
     <>
- <ToastContainer position="top-right" />
+      <ToastContainer position="top-right" />
       <div className="card flex justify-content-center">
-        <Dialog visible={visible} model style={{ width: '35vw' }} onHide={() => { if (!visible) return; setVisible(false); }}>
-          <form className="max-w-md mx-auto mt-3 p-5 border rounded" >
-            <h1 className="text-xl mb-3">Update Broker (દલાલ અપડેટ કરો )</h1>
+        <Dialog header="Update Broker (દલાલ અપડેટ કરો)" visible={visible} modal style={{ width: '35vw' }} onHide={() => setVisible(false)}>
+          <form className="max-w-md mx-auto mt-3 p-5 border rounded" onSubmit={saveBroker}>
+            {/* <h1 className="text-xl mb-3">Update Broker (દલાલ અપડેટ કરો)</h1> */}
 
-            <div className='relative z-0 w-full mb-5 group'>
+            {/* Broker Name Input */}
+            <div className="relative z-0 w-full mb-5 group">
               <input
                 type="text"
                 name="name"
                 placeholder=" "
                 required
-                // value={formData.name}
-                // onChange={handleChange}
-                className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none  dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-
+                value={selectedBroker.name} 
+                onChange={handleEditInputChange} 
+                className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
               />
               <label for="floating_password" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Broker Name(દલાલનું નામ)</label>
             </div>
 
-            <div className='relative z-0 w-full mb-5 group'>
+            {/* Mobile No Input */}
+            <div className="relative z-0 w-full mb-5 group">
               <input
                 type="number"
-                placeholder=" "
                 name="mobile_no"
-                // value={formData.mobile_no}
+                placeholder=" "
                 required
-                // onChange={handleChange}
+                value={selectedBroker.mobile_no} 
+                onChange={handleEditInputChange} 
                 className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
               />
               <label for="floating_password" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Mobile No (મોબાઇલ નં)</label>
             </div>
 
+            {/* Submit Button */}
             <button type="submit" className="w-full p-2 bg-red-600 hover:bg-red-500 text-white rounded">
               Submit
             </button>
           </form>
         </Dialog>
+
       </div>
       <div className="flex flex-col px-14 pt-5 ml-[250px] mt-24">
         <div className="-m-1.5 overflow-x-auto">
@@ -217,8 +229,6 @@ const GetBroker = () => {
                             onClick={() => openUpdateDialog(val)}                        >
                             <span className="pi pi-pen-to-square"></span>
                           </button>
-
-
                         </td>
                       </tr>
                     ))}
