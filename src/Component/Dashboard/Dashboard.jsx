@@ -17,16 +17,22 @@ const Dashboard = () => {
         setTotal(res.data.data);
       });
   }
-  
+
   const calculateNetAmount = () => {
     if (total && total.diamonds) {
-      const outgoing = total.diamonds.find((d) => d.type === "outgoing")?.totalPayment || 0;
       const incoming = total.diamonds.find((d) => d.type === "incoming")?.totalPayment || 0;
-      return incoming - outgoing;
+      const outgoing = total.diamonds.find((d) => d.type === "outgoing")?.totalPayment || 0;
+      const expense = total.totalExpense
+      return incoming - outgoing - expense;
+      // console.log(expense,"expense");
+
+      // return incoming - outgoing;
     }
-    return 0; 
+    return 0;
   };
 
+  console.log(total.diamonds);
+  
 
   return (
     <>
@@ -47,7 +53,7 @@ const Dashboard = () => {
                 </p>
               </div>
               <div className="pt-5 text-center text-3xl font-bold text-gray-600 transition-all duration-300 group-hover:text-white/90">
-                {new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR' }).format(  total.diamonds && total.diamonds[0] ? total.diamonds[0].totalPayment : 0)}
+                {new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR' }).format(total.diamonds && total.diamonds[0] ? total.diamonds[0].totalPayment : 0)}
               </div>
             </div>
           </div>
@@ -65,7 +71,7 @@ const Dashboard = () => {
                 </p>
               </div>
               <div className="pt-5 text-center text-3xl font-bold text-gray-600 transition-all duration-300 group-hover:text-white/90">
-                {new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR' }).format(  total.diamonds && total.diamonds[1] ? total.diamonds[1].totalPayment : 0)}
+                {new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR' }).format(total.diamonds && total.diamonds[1] ? total.diamonds[1].totalPayment : 0)}
               </div>
             </div>
           </div>
@@ -106,7 +112,7 @@ const Dashboard = () => {
             </div>
           </div>
 
-          {/* Total Brokerage */}
+          {/* income Brokerage */}
           <div className="group overflow-hidden relative h-[230px] w-[350px] cursor-pointer bg-white px-6 pt-10 pb-8 shadow-xl ring-1 ring-gray-900/5 transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl sm:rounded-lg">
             <span className="absolute top-10 z-0 h-20 w-20 rounded-full bg-red-500 transition-all duration-300 group-hover:scale-[10]"></span>
             <div className="relative z-10">
@@ -115,12 +121,29 @@ const Dashboard = () => {
                   <i className="pi pi-briefcase text-white text-3xl"></i>
                 </span>
                 <p className="ml-2 text-2xl font-semibold leading-[2.75rem] text-gray-600 transition-all duration-300 group-hover:text-white/90">
-                  Total Brokerage
+                  Incoming Brokerage
                 </p>
               </div>
               <div className="pt-5 text-center text-3xl font-bold text-gray-600 transition-all duration-300 group-hover:text-white/90">
-                0011215
-                {/* {new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR' }).format(total.diamonds[0].totalBrokerage + total.diamonds[1].totalBrokerage)} */}
+                {new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR' }).format(total.diamonds && total?.diamonds[0]?.totalBrokerage ||0)}
+              </div>
+            </div>
+          </div>
+
+          {/* outgoing brokerage */}
+          <div className="group overflow-hidden relative h-[230px] w-[350px] cursor-pointer bg-white px-6 pt-10 pb-8 shadow-xl ring-1 ring-gray-900/5 transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl sm:rounded-lg">
+            <span className="absolute top-10 z-0 h-20 w-20 rounded-full bg-red-500 transition-all duration-300 group-hover:scale-[10]"></span>
+            <div className="relative z-10">
+              <div className="flex items-center border-b-[1px] border-[#e2e2e2] pb-3">
+                <span className="grid h-20 w-20 place-items-center rounded-full bg-red-500 transition-all duration-300 group-hover:bg-red-400">
+                  <i className="pi pi-briefcase text-white text-3xl"></i>
+                </span>
+                <p className="ml-2 text-2xl font-semibold leading-[2.75rem] text-gray-600 transition-all duration-300 group-hover:text-white/90">
+                  Outgoing Brokerage
+                </p>
+              </div>
+              <div className="pt-5 text-center text-3xl font-bold text-gray-600 transition-all duration-300 group-hover:text-white/90">
+                {new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR' }).format(total.diamonds &&  total?.diamonds[1]?.totalBrokerage ||0)}
               </div>
             </div>
           </div>

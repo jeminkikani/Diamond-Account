@@ -148,7 +148,7 @@ const ShowEntryOutgoing = () => {
                         <td className="px-2 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-neutral-500">
                           <button onClick={() => openModal(ele)} className="text-blue-600 hover:text-blue-800"><i className="pi pi-list mr-3"></i></button>
                           <button className="text-blue-600 hover:text-blue-800" onClick={() => deleteEntry(ele._id)}><i className="pi pi-trash mr-3"></i></button>
-                          <button className="text-blue-600 hover:text-blue-800"><i className="pi pi-pen-to-square"></i></button>
+                          {/* <button className="text-blue-600 hover:text-blue-800"><i className="pi pi-pen-to-square"></i></button> */}
                         </td>
                       </tr>
                     ))}

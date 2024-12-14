@@ -21,7 +21,6 @@ const AddEntryincome = () => {
         days: '',
     });
     const [data, setData] = useState([])
-    const toast = useRef(null);
 
 
     const valdropdown = [
@@ -84,7 +83,7 @@ const AddEntryincome = () => {
         axios.post('https://diamond-be.onrender.com/api/v1/daimond/add-diamond', formData)
             .then((res) => {
 
-                if (res == 200 || res == 201 || res == 204) {
+                if (res.status == 200 || res.status == 201 || res.status == 204) {                    
                     toast.success("Data Added Successfully")
                 }
                 setFormData({
@@ -104,7 +103,7 @@ const AddEntryincome = () => {
                 });
             })
             .catch((err) => {
-                alert('Error adding broker: ' + (err.response ? err.response.data.message : err.message));
+                toast.error(err.response ? err.response.data.message : err.message)
             });
     };
 
