@@ -24,14 +24,9 @@ const Dashboard = () => {
       const outgoing = total.diamonds.find((d) => d.type === "outgoing")?.totalPayment || 0;
       const expense = total.totalExpense
       return incoming - outgoing - expense;
-      // console.log(expense,"expense");
-
-      // return incoming - outgoing;
     }
     return 0;
   };
-
-  console.log(total.diamonds);
   
 
   return (
