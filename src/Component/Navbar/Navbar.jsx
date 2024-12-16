@@ -68,7 +68,7 @@ const Navbar = () => {
                         </li>
                         <li>
                             <details>
-                                <summary class="flex items-center w-full p-2 text-base text-gray-900 transition duration-75 rounded-lg group  dark:text-black dark:hover:bg-red-500 hover:text-white cursor-pointer">
+                                <summary class="flex items-center w-full p-2 text-base  transition duration-75 rounded-lg group  text-black hover:bg-red-500 hover:text-white cursor-pointer">
                                     <span class="flex-1 ms-3 text-left rtl:text-right whitespace-nowrap">income</span>
                                     <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
                                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4" />

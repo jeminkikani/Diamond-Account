@@ -9,23 +9,26 @@ const AddBroker = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (formData.mobile_no.length !== 10) {
-      toast.error("Mobile number must be 10 digits")
-      // alert("Mobile number must be 10 digits.");
-      // return;
-    }
+   
     try {
-      axios.post('https://diamond-be.onrender.com/api/v1/broker/add-broker', formData)
-        .then((res) => {
-          if (res == 200 || 201) {
-            toast.success("Data Added Successfully")
-          }          
-          // alert('Broker added successfully!');
-          setFormData({ name: '', mobile_no: '' });
-        })
-        .catch((err) => {
-          alert('Error adding broker: ' + (err.response ? err.response.data.message : err.message));
-        });
+      if (formData.mobile_no.length !== 10) {
+        toast.error("Mobile number must be 10 digits")
+      }else if(formData.name.length == 0){
+        toast.error("Broker Name Is Requird")
+      }else{
+
+        axios.post('https://diamond-be.onrender.com/api/v1/broker/add-broker', formData)
+          .then((res) => {
+            if (res == 200 || 201) {
+              toast.success("Data Added Successfully")
+            }          
+            // alert('Broker added successfully!');
+            setFormData({ name: '', mobile_no: '' });
+          })
+          .catch((err) => {
+            alert('Error adding broker: ' + (err.response ? err.response.data.message : err.message));
+          });
+      }
     } catch (err) {
       toast.error(err)
     }
@@ -54,7 +57,6 @@ const AddBroker = () => {
             type="text"
             name="name"
             placeholder=" "
-            required
             value={formData.name}
             onChange={handleChange}
             className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none  dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"

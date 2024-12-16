@@ -142,11 +142,11 @@ const AddEntryincome = () => {
     const calculateBrokerage = (percentageValue) => {
 
         const totalPayment = parseFloat(formData.totalPayment) || 0;
-        const brokerage6Percent = (totalPayment * percentageValue) / 100;
-        const amountAfter6Percent = totalPayment - brokerage6Percent;
-        const brokerage = (amountAfter6Percent * 1) / 100;
-        const amountAfterBrokerage = amountAfter6Percent - brokerage;
-        const diamondPayment = amountAfterBrokerage
+        const brokerage6Percent = Math.floor((totalPayment * percentageValue) / 100);
+        const amountAfter6Percent = Math.floor(totalPayment - brokerage6Percent);
+        const brokerage = Math.floor((amountAfter6Percent * 1) / 100);
+        const amountAfterBrokerage = amountAfter6Percent - brokerage;        
+        const diamondPayment = Math.floor(amountAfterBrokerage);
 
 
         setFormData((prevData) => ({

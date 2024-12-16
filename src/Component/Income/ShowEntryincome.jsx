@@ -140,7 +140,7 @@ const ShowEntryIncome = () => {
                           })}
                         </td>
                         <td className="px-2 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-neutral-500">{ele.partyName}</td>
-                        <td className="px-2 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-neutral-500">{ele.brokerName.name}</td>
+                        <td className="px-2 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-neutral-500">{ele.amountAfterBrokerage}</td>
                         <td className="px-2 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-neutral-500">
                           {new Date(ele.paymentDate).toLocaleDateString('en-GB', {
                             year: 'numeric',

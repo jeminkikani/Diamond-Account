@@ -122,6 +122,40 @@ const AddEntryOutgoing = () => {
             ...prevData,
             [name]: value,
         }));
+
+        if (name === 'weight' || name === 'price') {
+            calculateTotalPayment(name, value);
+        }
+        if (name === 'diamondPaymentPercentage') {
+            calculateBrokerage(value);
+        } if (name == "percentage") {
+            calculateBrokerage(value)
+        }
+    };
+
+    const calculateTotalPayment = (fieldName, fieldValue) => {
+        const weight = fieldName === 'weight' ? parseFloat(fieldValue) || 0 : parseFloat(formData.weight) || 0;
+        const price = fieldName === 'price' ? parseFloat(fieldValue) || 0 : parseFloat(formData.price) || 0;
+        const totalPayment = weight * price;
+
+        setFormData((prevData) => ({ ...prevData, totalPayment }));
+    };
+
+    const calculateBrokerage = (percentageValue) => {
+
+        const totalPayment = parseFloat(formData.totalPayment) || 0;
+        const brokerage6Percent = Math.floor((totalPayment * percentageValue) / 100);
+        const amountAfter6Percent = Math.floor(totalPayment - brokerage6Percent);
+        const brokerage = Math.floor((amountAfter6Percent * 1) / 100);
+        const amountAfterBrokerage = amountAfter6Percent;        
+        const diamondPayment = Math.floor(amountAfterBrokerage);
+
+        setFormData((prevData) => ({
+            ...prevData,
+            // brokerage,
+            amountAfterBrokerage,
+            diamondPayment
+        }));
     };
 
 
@@ -162,7 +196,7 @@ const AddEntryOutgoing = () => {
                             <label for="floating_email" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Price(ભાવ)</label>
                         </div>
                         <div class="relative z-0 w-full mb-5 group">
-                            <input type="number" name="totalPayment" id="floating_email" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-black dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " value={formData.totalPayment} onChange={handleInputChange} required />
+                            <input type="number" name="totalPayment" step="1"  id="floating_email" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-black dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " value={formData.totalPayment} onChange={handleInputChange} required />
                             <label for="floating_email" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Total Payment(કુલ ચૂકવણી)</label>
                         </div>
                     </div>

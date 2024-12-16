@@ -20,8 +20,8 @@ const Dashboard = () => {
 
   const calculateNetAmount = () => {
     if (total && total.diamonds) {
-      const incoming = total.diamonds.find((d) => d.type === "incoming")?.totalPayment || 0;
-      const outgoing = total.diamonds.find((d) => d.type === "outgoing")?.totalPayment || 0;
+      const incoming = total.diamonds.find((d) => d.type === "incoming")?.amountAfterBrokerage || 0;
+      const outgoing = total.diamonds.find((d) => d.type === "outgoing")?.amountAfterBrokerage || 0;
       const expense = total.totalExpense
       return incoming - outgoing - expense;
     }
@@ -48,7 +48,7 @@ const Dashboard = () => {
                 </p>
               </div>
               <div className="pt-5 text-center text-3xl font-bold text-gray-600 transition-all duration-300 group-hover:text-white/90">
-                {new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR' }).format(total.diamonds && total.diamonds[0] ? total.diamonds[0].totalPayment : 0)}
+                {new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', minimumFractionDigits: 0,  maximumFractionDigits: 0 }).format(total.diamonds && total.diamonds[0] ? total.diamonds[0].amountAfterBrokerage : 0)}
               </div>
             </div>
           </div>
@@ -66,7 +66,7 @@ const Dashboard = () => {
                 </p>
               </div>
               <div className="pt-5 text-center text-3xl font-bold text-gray-600 transition-all duration-300 group-hover:text-white/90">
-                {new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR' }).format(total.diamonds && total.diamonds[1] ? total.diamonds[1].totalPayment : 0)}
+              {new Intl.NumberFormat('en-IN', {  style: 'currency',  currency: 'INR', minimumFractionDigits: 0,  maximumFractionDigits: 0}).format(total.diamonds && total.diamonds[1] ? total.diamonds[1].amountAfterBrokerage : 0)}
               </div>
             </div>
           </div>
@@ -84,7 +84,7 @@ const Dashboard = () => {
                 </p>
               </div>
               <div className="pt-5 text-center text-3xl font-bold text-gray-600 transition-all duration-300 group-hover:text-white/90">
-                {new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR' }).format(calculateNetAmount())}
+                {new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', minimumFractionDigits: 0,  maximumFractionDigits: 0 }).format(calculateNetAmount())}
               </div>
             </div>
           </div>
@@ -102,7 +102,7 @@ const Dashboard = () => {
                 </p>
               </div>
               <div className="pt-5 text-center text-3xl font-bold text-gray-600 transition-all duration-300 group-hover:text-white/90">
-                {new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR' }).format(total.totalExpense)}
+                {new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', minimumFractionDigits: 0,  maximumFractionDigits: 0 }).format(total.totalExpense)}
               </div>
             </div>
           </div>
@@ -120,7 +120,7 @@ const Dashboard = () => {
                 </p>
               </div>
               <div className="pt-5 text-center text-3xl font-bold text-gray-600 transition-all duration-300 group-hover:text-white/90">
-                {new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR' }).format(total.diamonds && total?.diamonds[0]?.totalBrokerage ||0)}
+                {new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', minimumFractionDigits: 0,  maximumFractionDigits: 0 }).format(total.diamonds && total?.diamonds[0]?.totalBrokerage ||0)}
               </div>
             </div>
           </div>
@@ -138,7 +138,7 @@ const Dashboard = () => {
                 </p>
               </div>
               <div className="pt-5 text-center text-3xl font-bold text-gray-600 transition-all duration-300 group-hover:text-white/90">
-                {new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR' }).format(total.diamonds &&  total?.diamonds[1]?.totalBrokerage ||0)}
+                {new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', minimumFractionDigits: 0,  maximumFractionDigits: 0 }).format(total.diamonds &&  total?.diamonds[1]?.totalBrokerage ||0)}
               </div>
             </div>
           </div>
