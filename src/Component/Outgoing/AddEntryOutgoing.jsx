@@ -146,7 +146,7 @@ const AddEntryOutgoing = () => {
         const totalPayment = parseFloat(formData.totalPayment) || 0;
         const brokerage6Percent = Math.floor((totalPayment * percentageValue) / 100);
         const amountAfter6Percent = Math.floor(totalPayment - brokerage6Percent);
-        const brokerage = Math.floor((amountAfter6Percent * 1) / 100);
+        // const brokerage = Math.floor((amountAfter6Percent * 1) / 100);
         const amountAfterBrokerage = amountAfter6Percent;        
         const diamondPayment = Math.floor(amountAfterBrokerage);
 
