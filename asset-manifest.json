@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/Diamond-Account/static/css/main.856bf757.css",
-    "main.js": "/Diamond-Account/static/js/main.231cdb40.js",
+    "main.js": "/Diamond-Account/static/js/main.a3347c25.js",
     "static/js/453.ed3810f9.chunk.js": "/Diamond-Account/static/js/453.ed3810f9.chunk.js",
     "static/media/primeicons.svg": "/Diamond-Account/static/media/primeicons.6ed59f962963a4a73af2.svg",
     "static/media/primeicons.eot": "/Diamond-Account/static/media/primeicons.ff0c4cd79b2ffca2de54.eot",
@@ -10,11 +10,11 @@
     "static/media/primeicons.woff2": "/Diamond-Account/static/media/primeicons.024b32cc7bf399b1a847.woff2",
     "index.html": "/Diamond-Account/index.html",
     "main.856bf757.css.map": "/Diamond-Account/static/css/main.856bf757.css.map",
-    "main.231cdb40.js.map": "/Diamond-Account/static/js/main.231cdb40.js.map",
+    "main.a3347c25.js.map": "/Diamond-Account/static/js/main.a3347c25.js.map",
     "453.ed3810f9.chunk.js.map": "/Diamond-Account/static/js/453.ed3810f9.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.856bf757.css",
-    "static/js/main.231cdb40.js"
+    "static/js/main.a3347c25.js"
   ]
 }
