@@ -3,7 +3,7 @@ import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-const AddBroker = () => {
+const AddBroker = ({selectedColor}) => {
   const [formData, setFormData] = useState({ name: '', mobile_no: '' });
 
   const handleSubmit = (e) => {
@@ -78,7 +78,7 @@ const AddBroker = () => {
           <label for="floating_password" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Mobile No (મોબાઇલ નં)</label>
         </div>
 
-        <button type="submit" className="w-full p-2 bg-red-600 hover:bg-red-500 text-white rounded">
+        <button type="submit" className="w-full p-2 bg-red-600 hover:bg-red-500 text-white rounded" style={{backgroundColor:selectedColor}}>
           Submit
         </button>
       </form>

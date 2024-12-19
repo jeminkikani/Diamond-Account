@@ -5,7 +5,7 @@ import Swal from 'sweetalert2'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-const GetBroker = () => {
+const GetBroker = ({selectedColor}) => {
   const [broker, setBroker] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const brokersPerPage = 8; // Number of brokers to display per page
@@ -171,7 +171,7 @@ const GetBroker = () => {
             </div>
 
             {/* Submit Button */}
-            <button type="submit" className="w-full p-2 bg-red-600 hover:bg-red-500 text-white rounded">
+            <button type="submit" className="w-full p-2 bg-red-600 hover:bg-red-500 text-white rounded" style={{backgroundColor:selectedColor}}>
               Submit
             </button>
           </form>
@@ -204,7 +204,7 @@ const GetBroker = () => {
               <div className="overflow-hidden">
                 <table className="min-w-full divide-y divide-gray-200 dark:divide-neutral-700">
                   <thead className="bg-red-500">
-                    <tr className='bg-red-500'>
+                    <tr className='bg-red-500' style={{backgroundColor:selectedColor}}>
                       <th scope="col" className="px-6 py-3 text-start text-xs font-bold text-white uppercase dark:text-white ">Broker Name (દલાલનું નામ)</th>
                       <th scope="col" className="px-6 py-3 text-start text-xs font-bold text-white uppercase dark:text-white">Mobile No (મોબાઇલ નં)</th>
                       <th scope="col" className="px-6 py-3 text-end text-xs font-medium text-white uppercase dark:text-white">Action</th>
@@ -246,6 +246,7 @@ const GetBroker = () => {
                       onClick={() => handlePageChange(i + 1)}
                       className={`min-w-[40px] flex justify-center items-center text-gray-800 py-2.5 text-sm rounded-full ${currentPage === i + 1 ? 'bg-blue-500 text-white' : 'dark:hover:text-white dark:focus:bg-neutral-700 dark:hover:bg-neutral-700'
                         }`}
+                    style={{backgroundColor:selectedColor}}
                     >
                       {i + 1}
                     </button>

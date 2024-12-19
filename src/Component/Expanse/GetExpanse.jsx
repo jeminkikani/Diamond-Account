@@ -5,7 +5,7 @@ import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-const GetExpanse = () => {
+const GetExpanse = ({selectedColor}) => {
   const [expanse, setExpanse] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const brokersPerPage = 8; // Number of brokers to display per page
@@ -126,7 +126,7 @@ const GetExpanse = () => {
         style={{ width: '50vw' }}
         footer={
           <div>
-            <button onClick={saveExpanse} className="bg-red-500 hover:bg-red-800 text-white px-4 py-2 rounded-lg mr-3">Save</button>
+            <button onClick={saveExpanse} className="bg-red-500 hover:bg-red-800 text-white px-4 py-2 rounded-lg mr-3" style={{backgroundColor:selectedColor}}>Save</button>
             <button onClick={() => setVisible(false)} className="bg-gray-300 px-4 py-2 rounded-lg">Cancel</button>
           </div>
         }
@@ -182,7 +182,7 @@ const GetExpanse = () => {
               <div className="overflow-hidden">
                 <table className="min-w-full divide-y divide-gray-200 dark:divide-neutral-700">
                   <thead className="bg-red-500">
-                    <tr className='bg-red-500'>
+                    <tr className='bg-red-500' style={{backgroundColor:selectedColor}}>
                       <th scope="col" className="px-6 py-3 text-start text-xs font-bold text-white uppercase dark:text-white ">Date(તારીખ)</th>
                       <th scope="col" className="px-6 py-3 text-start text-xs font-bold text-white uppercase dark:text-white">Description (વર્ણન)</th>
                       <th scope="col" className="px-6 py-3 text-start text-xs font-medium text-white uppercase dark:text-white">Payment(ચૂકવણી)</th>
@@ -232,6 +232,7 @@ const GetExpanse = () => {
                       onClick={() => handlePageChange(i + 1)}
                       className={`min-w-[40px] flex justify-center items-center text-gray-800 py-2.5 text-sm rounded-full ${currentPage === i + 1 ? 'bg-blue-500 text-white' : 'dark:hover:text-white dark:focus:bg-neutral-700 dark:hover:bg-neutral-700'
                         }`}
+                    style={{backgroundColor:selectedColor}}
                     >
                       {i + 1}
                     </button>

@@ -3,7 +3,7 @@ import { Calendar } from 'primereact/calendar';
 import React, { useEffect, useState } from 'react'
 import Swal from 'sweetalert2';
 
-const ShowEntryOutgoing = () => {
+const ShowEntryOutgoing = ({selectedColor}) => {
 
 
 
@@ -115,7 +115,7 @@ const ShowEntryOutgoing = () => {
             <div className="overflow-hidden">
               <table className="min-w-full divide-y divide-gray-200 dark:divide-neutral-700">
                 <thead className="bg-gray-50">
-                  <tr className="bg-red-500 text-white">
+                  <tr className="bg-red-500 text-white" style={{backgroundColor:selectedColor}}>
                     <th scope="col" className="px-2 py-3 text-start text-xs font-medium text-gray-500 uppercase dark:text-neutral-100">Date(તારીખ)</th>
                     <th scope="col" className="py-3 text-start text-xs font-medium text-white uppercase dark:text-neutral-100">Party Name(પાર્ટીનું નામ)</th>
                     <th scope="col" className="py-3 text-start text-xs font-medium text-white uppercase dark:text-neutral-100">Broker Name(દલાલનું નામ)</th>
@@ -172,6 +172,7 @@ const ShowEntryOutgoing = () => {
                     key={i + 1}
                     onClick={() => handlePageChange(i + 1)}
                     className={`min-w-[40px] flex justify-center items-center text-gray-800 py-2.5 text-sm rounded-full ${currentPage === i + 1 ? 'bg-red-600 text-white' : 'dark:hover:text-white dark:focus:bg-neutral-700 dark:hover:bg-neutral-700'}`}
+                  style={{backgroundColor:selectedColor}}
                   >
                     {i + 1}
                   </button>
@@ -187,7 +188,7 @@ const ShowEntryOutgoing = () => {
       {showModal && selectedRow && (
         <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 z-50">
           <div className="bg-white dark:bg-white p-6 rounded-lg max-w-lg w-full">
-            <h2 className="text-lg font-semibold mb-4 bg-red-500 text-center uppercase p-2 rounded-lg text-gray-900 dark:text-white">{selectedRow.partyName} Details</h2>
+            <h2 className="text-lg font-semibold mb-4 bg-red-500 text-center uppercase p-2 rounded-lg text-gray-900 dark:text-white" style={{backgroundColor:selectedColor}}>{selectedRow.partyName} Details</h2>
             <div>
               <label className='block'>Weight</label>
               <input className="text-sm border border-gray-600 p-[10px] rounded-lg w-full mt-2 text-gray-700 dark:text-gray-600" value={selectedRow.weight}></input>
@@ -217,7 +218,7 @@ const ShowEntryOutgoing = () => {
             <input className="text-sm text-gray-700 dark:text-gray-300"><strong>Percentage:</strong> {selectedRow.percentage}</input>
             <input className="text-sm text-gray-700 dark:text-gray-300"><strong>Brokerage: </strong> {selectedRow.brokerage}</input>
             <input className="text-sm text-gray-700 dark:text-gray-300"><strong>Amount After Brokerage: </strong> {selectedRow.amountAfterBrokerage}</input> */}
-            <button onClick={closeModal} className="mt-4 px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-300">Close</button>
+            <button onClick={closeModal} className="mt-4 px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-300" style={{backgroundColor:selectedColor}}>Close</button>
           </div>
         </div>
       )}

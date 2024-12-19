@@ -2,7 +2,7 @@ import axios from 'axios';
 import React, { useEffect, useRef, useState } from 'react'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-const AddEntryOutgoing = () => {
+const AddEntryOutgoing = ({selectedColor}) => {
 
     const [formData, setFormData] = useState({
         date: '',
@@ -164,7 +164,7 @@ const AddEntryOutgoing = () => {
             <ToastContainer position="top-right" />
             <div>
                 <form class="max-w-3xl mx-auto mt-24 border p-5 rounded-[10px] border-solid border-[black] ml-[510px]" onSubmit={handleSubmit}>
-                    <h1 className='bg-red-500 text-white text-xl rounded-3xl text-center mb-5 p-1'>Outgoing(જાવક)</h1>
+                    <h1 className='bg-red-500 text-white text-xl rounded-3xl text-center mb-5 p-1' style={{backgroundColor:selectedColor}}>Outgoing(જાવક)</h1>
                     <div class="grid md:grid-cols-2 md:gap-6">
                         <div class="relative z-0 w-full mb-5 group">
                             <input type="date" name="date" id="floating_first_name" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-black dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" value={formData.date} onChange={handleInputChange} placeholder=" " required />
@@ -266,7 +266,7 @@ const AddEntryOutgoing = () => {
                         <input type="number" name="diamondPayment" id="diamondPayment" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-black dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " value={formData.diamondPayment} onChange={handleInputChange} />
                         <label for="diamondPayment" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Total Payment</label>
                     </div>
-                    <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">Submit</button>
+                    <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800" style={{backgroundColor :selectedColor}}>Submit</button>
                 </form>
 
             </div>

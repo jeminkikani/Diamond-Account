@@ -18,12 +18,12 @@ import AddBroker from './Component/Broker/AddBroker';
 function App() {
   const [loading, setLoading] = useState(false);
   const [first, setFirst] = useState(sessionStorage.getItem("data") || "");
-
+  const [selectedColor, setSelectedColor] = useState('#ff0000'); //
+  
   useEffect(() => {
     const checkLoading = async () => {
       setLoading(true);
-      // Simulate loading only if necessary (e.g., check session or preload data)
-      await new Promise(resolve => setTimeout(resolve, 2000)); // Simulated delay
+      await new Promise(resolve => setTimeout(resolve, 2000)); 
       setLoading(false);
     };
   
@@ -37,22 +37,23 @@ function App() {
         <Login setFirst={setFirst} />
       ) : (
         <>
-          <Navbar />
+        
+          <Navbar selectedColor={selectedColor} setSelectedColor={setSelectedColor}/>
           {loading ? (
             <div className="loader-container mt-28 justify-center ml-[800px]">
               <ProgressSpinner style={{ width: '50px', height: '50px' }} strokeWidth="8" animationDuration=".5s" />
             </div>
           ) : (
             <Routes>
-              <Route path='/' element={<Dashboard />} />
-              <Route path="/addEntryincome" element={<AddEntryincome />} /> 
-              <Route path="/showEntryincome" element={<ShowEntryIncome />} />
-              <Route path="/addbroker" element={<AddBroker />} />
-              <Route path="/getbroker" element={<GetBroker />} />
-              <Route path='/addexpanse' element={<AddExpanse />} />
-              <Route path='/getexpanse' element={<GetExpanse />} />
-              <Route path='/addEntryoutgoing' element={<AddEntryOutgoing />} />
-              <Route path='/showEntryoutgoing' element={<ShowEntryOutgoing />} />
+              <Route path='/' element={<Dashboard selectedColor={selectedColor}/>} />
+              <Route path="/addEntryincome" element={<AddEntryincome selectedColor={selectedColor}/>} /> 
+              <Route path="/showEntryincome" element={<ShowEntryIncome selectedColor={selectedColor}/>} />
+              <Route path="/addbroker" element={<AddBroker selectedColor={selectedColor}/>} />
+              <Route path="/getbroker" element={<GetBroker selectedColor={selectedColor}/>} />
+              <Route path='/addexpanse' element={<AddExpanse selectedColor={selectedColor}/>} />
+              <Route path='/getexpanse' element={<GetExpanse selectedColor={selectedColor}/>} />
+              <Route path='/addEntryoutgoing' element={<AddEntryOutgoing selectedColor={selectedColor}/>} />
+              <Route path='/showEntryoutgoing' element={<ShowEntryOutgoing selectedColor={selectedColor}/>} />
 
             </Routes>
           )}
