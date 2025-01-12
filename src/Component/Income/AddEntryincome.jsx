@@ -134,7 +134,7 @@ const AddEntryincome = ({selectedColor}) => {
     const calculateTotalPayment = (fieldName, fieldValue) => {
         const weight = fieldName === 'weight' ? parseFloat(fieldValue) || 0 : parseFloat(formData.weight) || 0;
         const price = fieldName === 'price' ? parseFloat(fieldValue) || 0 : parseFloat(formData.price) || 0;
-        const totalPayment = weight * price;
+        const totalPayment = Math.floor(weight * price);
 
         setFormData((prevData) => ({ ...prevData, totalPayment }));
     };
@@ -217,17 +217,17 @@ const AddEntryincome = ({selectedColor}) => {
                         </div>
                     </div>
 
-                    <div class="grid md:grid-cols-2 md:gap-6">
-                        <div class="relative z-0 w-full mb-3 group">
+                    <div class="grid  md:gap-6">
+                        {/* <div class="relative z-0 w-full mb-3 group"> */}
 
-                            <div class="relative z-0 w-full  group">
+                            {/* <div class="relative z-0 w-full  group">
                                 <input type="date" name="paymentDate" id="floating_first_name" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-black dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" value={formData.paymentDate} onChange={handleInputChange} placeholder="Date" required />
                                 <label for="floating_first_name" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Payment(ચુકવણીની તારીખ)</label>
-                            </div>
+                            </div> */}
                             {/* <input type="password" name="repeat_password" id="floating_repeat_password" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required /> */}
                             {/* <label for="floating_repeat_password" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Broker Name(દલાલનું નામ)</label> */}
-                        </div>
-                        <div class="relative z-0 w-full  group">
+                        {/* </div> */}
+                        <div class="relative z-0 w-full mb-5 group">
                             <input type="number" name="days" id="days" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-black dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " value={formData.days} onChange={handleInputChange} required />
                             <label for="days" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Days</label>
                         </div>
@@ -240,8 +240,7 @@ const AddEntryincome = ({selectedColor}) => {
                         {
                             data.map((val) => {
                                 return (
-
-                                    <option key={val._id} value={val._id} className='peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6'>
+                                    <option key={val._id} value={val._id} className='peer-focus:font-medium p-3 absolute text-sm text-black duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6'>
                                         {val.name}
                                     </option>
                                 )

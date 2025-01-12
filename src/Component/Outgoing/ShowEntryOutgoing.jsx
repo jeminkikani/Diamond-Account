@@ -116,10 +116,10 @@ const ShowEntryOutgoing = ({selectedColor}) => {
               <table className="min-w-full divide-y divide-gray-200 dark:divide-neutral-700">
                 <thead className="bg-gray-50">
                   <tr className="bg-red-500 text-white" style={{backgroundColor:selectedColor}}>
-                    <th scope="col" className="px-2 py-3 text-start text-xs font-medium text-gray-500 uppercase dark:text-neutral-100">Date(તારીખ)</th>
+                    <th scope="col" className="px-2 py-3 text-start text-xs font-medium text-white uppercase dark:text-neutral-100">Date(તારીખ)</th>
                     <th scope="col" className="py-3 text-start text-xs font-medium text-white uppercase dark:text-neutral-100">Party Name(પાર્ટીનું નામ)</th>
                     <th scope="col" className="py-3 text-start text-xs font-medium text-white uppercase dark:text-neutral-100">Broker Name(દલાલનું નામ)</th>
-                    <th scope="col" className="py-3 text-start text-xs font-medium text-white uppercase dark:text-neutral-100">Payment(ચુકવણીની તારીખ)</th>
+                    {/* <th scope="col" className="py-3 text-start text-xs font-medium text-white uppercase dark:text-neutral-100">Payment(ચુકવણીની તારીખ)</th> */}
                     <th scope="col" className="py-3 text-start text-xs font-medium text-white uppercase dark:text-neutral-100">Amount After Brokerage</th>
                     <th scope="col" className="py-3 text-start text-xs font-medium text-white uppercase dark:text-neutral-100">More</th>
                   </tr>
@@ -136,14 +136,14 @@ const ShowEntryOutgoing = ({selectedColor}) => {
                           })}
                         </td>
                         <td className="px-2 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-neutral-500">{ele.partyName}</td>
-                        <td className="px-2 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-neutral-500">{ele.brokerName.name}</td>
-                        <td className="px-2 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-neutral-500">
+                        <td className="px-2 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-neutral-500">{ele.brokerName ?ele.brokerName.name : ele.brokerName}</td>
+                        {/* <td className="px-2 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-neutral-500">
                           {new Date(ele.paymentDate).toLocaleDateString('en-GB', {
                             year: 'numeric',
                             month: '2-digit',
                             day: '2-digit'
                           })}
-                        </td>
+                        </td> */}
                         <td className="px-2 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-neutral-500">{ele.amountAfterBrokerage}</td>
                         <td className="px-2 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-neutral-500">
                           <button onClick={() => openModal(ele)} className="text-blue-600 hover:text-blue-800"><i className="pi pi-list mr-3"></i></button>
@@ -172,7 +172,7 @@ const ShowEntryOutgoing = ({selectedColor}) => {
                     key={i + 1}
                     onClick={() => handlePageChange(i + 1)}
                     className={`min-w-[40px] flex justify-center items-center text-gray-800 py-2.5 text-sm rounded-full ${currentPage === i + 1 ? 'bg-red-600 text-white' : 'dark:hover:text-white dark:focus:bg-neutral-700 dark:hover:bg-neutral-700'}`}
-                  style={{backgroundColor:selectedColor}}
+                    style={{backgroundColor: currentPage === i + 1 ? selectedColor : 'white'}}
                   >
                     {i + 1}
                   </button>
@@ -188,7 +188,7 @@ const ShowEntryOutgoing = ({selectedColor}) => {
       {showModal && selectedRow && (
         <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 z-50">
           <div className="bg-white dark:bg-white p-6 rounded-lg max-w-lg w-full">
-            <h2 className="text-lg font-semibold mb-4 bg-red-500 text-center uppercase p-2 rounded-lg text-gray-900 dark:text-white" style={{backgroundColor:selectedColor}}>{selectedRow.partyName} Details</h2>
+            <h2 className="text-lg font-semibold mb-4 bg-red-500 text-center uppercase p-2 rounded-lg text-white" style={{backgroundColor:selectedColor}}>{selectedRow.partyName} Details</h2>
             <div>
               <label className='block'>Weight</label>
               <input className="text-sm border border-gray-600 p-[10px] rounded-lg w-full mt-2 text-gray-700 dark:text-gray-600" value={selectedRow.weight}></input>
@@ -203,7 +203,7 @@ const ShowEntryOutgoing = ({selectedColor}) => {
             </div>
             <div>
               <label className='block'>Percentage</label>
-              <input className="text-sm border border-gray-600 p-[10px] rounded-lg w-full mt-2 text-gray-700 dark:text-gray-600" value={selectedRow.percentage}></input>
+              <input className="text-sm border border-gray-600 p-[10px] rounded-lg w-full mt-2 text-gray-700 dark:text-gray-600" value={selectedRow.diamondPaymentPercentage}></input>
             </div>
             <div>
               <label className='block'>Brokerage</label>

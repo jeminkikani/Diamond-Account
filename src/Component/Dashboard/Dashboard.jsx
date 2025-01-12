@@ -22,7 +22,7 @@ const Dashboard = ({selectedColor }) => {
     if (total && total.diamonds) {
       const incoming = total.diamonds.find((d) => d.type === "incoming")?.amountAfterBrokerage || 0;
       const outgoing = total.diamonds.find((d) => d.type === "outgoing")?.amountAfterBrokerage || 0;
-      const expense = total.totalExpense
+      const expense = total.totalExpense || 0
       return incoming - outgoing - expense;
     }
     return 0;
