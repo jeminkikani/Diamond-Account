@@ -227,16 +227,14 @@ const GetExpanse = ({selectedColor}) => {
                     «
                   </button>
                   {Array.from({ length: totalPages }, (_, i) => (
-                    <button
-                      key={i + 1}
-                      onClick={() => handlePageChange(i + 1)}
-                      className={`min-w-[40px] flex justify-center items-center text-gray-800 py-2.5 text-sm rounded-full ${currentPage === i + 1 ? 'bg-blue-500 text-white' : 'dark:hover:text-white dark:focus:bg-neutral-700 dark:hover:bg-neutral-700'
-                        }`}
-                    style={{backgroundColor:selectedColor}}
-                    >
-                      {i + 1}
-                    </button>
-                  ))}
+                  <button style={{backgroundColor: currentPage === i + 1 ? selectedColor : 'white'}}
+                    key={i + 1}
+                    onClick={() => handlePageChange(i + 1)}
+                    className={`min-w-[40px] flex justify-center items-center text-black py-2.5 text-sm rounded-full ${currentPage === i + 1 ? 'bg-red-600 text-white' : 'hover:text-black focus:bg-red-900 hover:bg-red-900'}`}
+                  >
+                    {i + 1}
+                  </button>
+                ))}
                   <button onClick={handleNext} disabled={currentPage === totalPages} className="p-2.5 min-w-[40px] inline-flex justify-center items-center gap-x-2 text-sm rounded-full text-gray-800 dark:hover:text-white dark:hover:bg-neutral-700 dark:focus:bg-neutral-700" aria-label="Next">
                     »
                   </button>

@@ -168,11 +168,10 @@ const ShowEntryOutgoing = ({selectedColor}) => {
                   «
                 </button>
                 {Array.from({ length: totalPages }, (_, i) => (
-                  <button
+                  <button style={{backgroundColor: currentPage === i + 1 ? selectedColor : 'white'}}
                     key={i + 1}
                     onClick={() => handlePageChange(i + 1)}
-                    className={`min-w-[40px] flex justify-center items-center text-gray-800 py-2.5 text-sm rounded-full ${currentPage === i + 1 ? 'bg-red-600 text-white' : 'dark:hover:text-white dark:focus:bg-neutral-700 dark:hover:bg-neutral-700'}`}
-                    style={{backgroundColor: currentPage === i + 1 ? selectedColor : 'white'}}
+                    className={`min-w-[40px] flex justify-center items-center text-black py-2.5 text-sm rounded-full ${currentPage === i + 1 ? 'bg-red-600 text-white' : 'hover:text-black focus:bg-red-900 hover:bg-red-900'}`}
                   >
                     {i + 1}
                   </button>
