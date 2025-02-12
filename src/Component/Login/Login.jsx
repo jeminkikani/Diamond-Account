@@ -45,7 +45,7 @@ const Login = ({ setFirst }) => {
             <ToastContainer position="top-right" />
             {loading && (
                 <div className="loader-container justify-center absolute z-50 w-full h-full left-0 items-center right-0 top-0  flex  bg-[#ffffff69]">
-                    <ProgressSpinner style={{ width: '50px', height: '50px' }} strokeWidth="8" animationDuration=".5s" />
+                    <ProgressSpinner style={{ width: '50px', height: '50px' }} strokeWidth={8} animationDuration=".5s" />
                 </div>
             )}
             <section className="flex flex-col md:flex-row h-screen items-center">

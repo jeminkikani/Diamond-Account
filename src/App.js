@@ -41,7 +41,7 @@ function App() {
           <Navbar selectedColor={selectedColor} setSelectedColor={setSelectedColor}/>
           {loading ? (
             <div className="loader-container mt-28 justify-center ml-[800px]">
-              <ProgressSpinner style={{ width: '50px', height: '50px' }} strokeWidth="8" animationDuration=".5s" />
+              <ProgressSpinner style={{ width: '50px', height: '50px' }} strokeWidth={8} animationDuration=".5s" />
             </div>
           ) : (
             <Routes>
