@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import Swal from 'sweetalert2';
 import { Calendar } from 'primereact/calendar';
 
-const ShowEntryIncome = ({selectedColor}) => {
+const ShowEntryIncome = ({ selectedColor }) => {
   const [diamondEntry, setDiamondEntry] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const brokersPerPage = 8;
@@ -16,11 +16,11 @@ const ShowEntryIncome = ({selectedColor}) => {
   }, [dateRange]);
 
   const getEntry = () => {
-    
+
     axios
       .get('https://diamond-be.onrender.com/api/v1/daimond/get-diamond?entryType=incoming')
       .then((res) => {
-        
+
         const entries = res.data.data;
 
         const filteredEntries = dateRange
@@ -81,11 +81,69 @@ const ShowEntryIncome = ({selectedColor}) => {
     });
   };
 
+  const handleInputChange = (e, field) => {
+    const { name, value } = e.target;
+    setSelectedRow({
+      ...selectedRow,
+      [field]: value,
+    });
 
-  // const filteredBrokers = broker.filter((b) =>
-  //   b.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
-  //   b.mobile_no.toString().includes(searchTerm)
-  // );
+    if (name === 'weight' || name === 'price') {
+      calculateTotalPayment(name, value);
+    }
+
+    if (name === 'diamondPaymentPercentage' || name === 'percentage') {
+      calculateBrokerage(value);
+    }
+  };
+
+  const calculateTotalPayment = (fieldName, fieldValue) => {
+    const weight = fieldName === 'weight' ? parseFloat(fieldValue) || 0 : parseFloat(selectedRow.weight) || 0;
+    const price = fieldName === 'price' ? parseFloat(fieldValue) || 0 : parseFloat(selectedRow.price) || 0;
+    const totalPayment = Math.floor(weight * price);
+    
+    setSelectedRow(prev => ({ ...prev, totalPayment }));
+  };
+
+  const calculateBrokerage = (percentageValue) => {
+    const totalPayment = parseFloat(selectedRow.totalPayment) || 0;
+    const brokeragePercentage = parseFloat(percentageValue) || 0;
+    const brokerageAmount = Math.floor((totalPayment * brokeragePercentage) / 100);
+    const amountAfterBrokerage = totalPayment - brokerageAmount;
+    
+    // Static 1% deduction after brokerage
+    const staticFee = Math.floor(amountAfterBrokerage * 0.01);
+    const finalAmount = amountAfterBrokerage - staticFee;
+
+    setSelectedRow(prev => ({
+      ...prev,
+      brokerage: brokerageAmount,
+      amountAfterBrokerage: finalAmount,
+    }));
+  };
+
+
+  const updateData = (id) => {
+    const updatedData = {
+      ...selectedRow,
+      totalPayment: selectedRow.totalPayment,
+      brokerage: selectedRow.brokerage,
+      amountAfterBrokerage: selectedRow.amountAfterBrokerage,
+    };
+
+    axios
+      .put(`https://diamond-be.onrender.com/api/v1/daimond/update-diamond/${id}`, updatedData)
+      .then((response) => {
+        Swal.fire('Updated!', 'The entry has been updated successfully.', 'success');
+        getEntry()
+        closeModal();
+      })
+      .catch((error) => {
+        Swal.fire('Error!', 'There was an issue updating the entry.', 'error');
+        console.error('Error updating entry:', error);
+      });
+    }
+
 
   return (
 
@@ -119,7 +177,7 @@ const ShowEntryIncome = ({selectedColor}) => {
             <div className="overflow-hidden">
               <table className="min-w-full divide-y divide-gray-200">
                 <thead className="bg-gray-50">
-                  <tr className="bg-red-500 text-white" style={{backgroundColor:selectedColor}}>
+                  <tr className="bg-red-500 text-white" style={{ backgroundColor: selectedColor }}>
                     <th scope="col" className="px-2 text-start text-xs font-medium text-white uppercase dark:text-neutral-100">Date(તારીખ)</th>
                     <th scope="col" className="py-3 text-start text-xs font-medium text-white uppercase dark:text-neutral-100">Party Name(પાર્ટીનું નામ)</th>
                     <th scope="col" className="py-3 text-start text-xs font-medium text-white uppercase dark:text-neutral-100">Broker Name(દલાલનું નામ)</th>
@@ -140,7 +198,7 @@ const ShowEntryIncome = ({selectedColor}) => {
                           })}
                         </td>
                         <td className="px-2 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-neutral-500">{ele.partyName}</td>
-                        <td className="px-2 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-neutral-500">{ele.brokerName ? ele.brokerName.name :ele.brokerName || '-'}</td>
+                        <td className="px-2 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-neutral-500">{ele.brokerName ? ele.brokerName.name : ele.brokerName || '-'}</td>
                         {/* <td className="px-2 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-neutral-500">
                           {new Date(ele.paymentDate).toLocaleDateString('en-GB', {
                             year: 'numeric',
@@ -172,7 +230,7 @@ const ShowEntryIncome = ({selectedColor}) => {
                   «
                 </button>
                 {Array.from({ length: totalPages }, (_, i) => (
-                  <button style={{backgroundColor: currentPage === i + 1 ? selectedColor : 'white'}}
+                  <button style={{ backgroundColor: currentPage === i + 1 ? selectedColor : 'white' }}
                     key={i + 1}
                     onClick={() => handlePageChange(i + 1)}
                     className={`min-w-[40px] flex justify-center items-center text-black py-2.5 text-sm rounded-full ${currentPage === i + 1 ? 'bg-red-600 text-white' : 'hover:text-black focus:bg-red-900 hover:bg-red-900'}`}
@@ -191,37 +249,70 @@ const ShowEntryIncome = ({selectedColor}) => {
       {showModal && selectedRow && (
         <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 z-50">
           <div className="bg-white dark:bg-white p-6 rounded-lg max-w-lg w-full">
-            <h2 className="text-lg font-semibold mb-4 bg-red-500 text-center uppercase p-2 rounded-lg  text-white" style={{backgroundColor:selectedColor}}>{selectedRow.partyName} Details</h2>
+            <h2 className="text-lg font-semibold mb-4 bg-red-500 text-center uppercase p-2 rounded-lg text-white" style={{ backgroundColor: selectedColor }}>
+              {selectedRow.partyName} Details
+            </h2>
             <div>
               <label className='block'>Weight</label>
-              <input className="text-sm border border-gray-600 p-[10px] rounded-lg w-full mt-2 text-gray-700 dark:text-gray-600" value={selectedRow.weight}></input>
+              <input name='weight'
+                className="text-sm border border-gray-600 p-[10px]  rounded-lg w-full mt-2 text-gray-700 dark:text-gray-600"
+                value={selectedRow.weight}
+                onChange={(e) => handleInputChange(e, 'weight')}
+              />
             </div>
             <div>
               <label className='block'>Price</label>
-              <input className="text-sm border border-gray-600 p-[10px] rounded-lg w-full mt-2 text-gray-700 dark:text-gray-600" value={selectedRow.price}></input>
+              <input name='price'
+                className="text-sm border border-gray-600 p-[10px] rounded-lg w-full mt-2 text-gray-700 dark:text-gray-600"
+                value={selectedRow.price}
+                onChange={(e) => handleInputChange(e, 'price')}
+              />
             </div>
             <div>
               <label className='block'>Total Payment</label>
-              <input className="text-sm border border-gray-600 p-[10px] rounded-lg w-full mt-2 text-gray-700 dark:text-gray-600" value={selectedRow.totalPayment}></input>
+              <input name='totalPayment'
+                className="text-sm border border-gray-600 p-[10px] rounded-lg w-full mt-2 text-gray-700 dark:text-gray-600"
+                value={selectedRow.totalPayment}
+                readOnly
+              />
             </div>
             <div>
               <label className='block'>Percentage</label>
-              <input className="text-sm border border-gray-600 p-[10px] rounded-lg w-full mt-2 text-gray-700 dark:text-gray-600" value={selectedRow.diamondPaymentPercentage}></input>
+              <input name='diamondPaymentPercentage'
+                className="text-sm border border-gray-600 p-[10px] rounded-lg w-full mt-2 text-gray-700 dark:text-gray-600"
+                value={selectedRow.diamondPaymentPercentage}
+                onChange={(e) => handleInputChange(e, 'diamondPaymentPercentage')}
+              />
             </div>
             <div>
               <label className='block'>Brokerage</label>
-              <input className="text-sm border border-gray-600 p-[10px] rounded-lg w-full mt-2 text-gray-700 dark:text-gray-600" value={selectedRow.brokerage}></input>
+              <input name='brokerage'
+                className="text-sm border border-gray-600 p-[10px] rounded-lg w-full mt-2 text-gray-700 dark:text-gray-600"
+                value={selectedRow.brokerage}
+                onChange={(e) => handleInputChange(e, 'brokerage')}
+              />
             </div>
             <div>
               <label className='block'>Amount After Brokerage</label>
-              <input className="text-sm border border-gray-600 p-[10px] rounded-lg w-full mt-2 text-gray-700 dark:text-gray-600" value={selectedRow.amountAfterBrokerage}></input>
+              <input name='amountAfterBrokerage'
+                className="text-sm border border-gray-600 p-[10px] rounded-lg w-full mt-2 text-gray-700 dark:text-gray-600"
+                value={selectedRow.amountAfterBrokerage}
+                readOnly
+              />
             </div>
-            {/* <input className="text-sm text-gray-700 dark:text-gray-300"><strong>Price:</strong> {selectedRow.price}</input>
-            <input className="text-sm text-gray-700 dark:text-gray-300"><strong>Total Payment:</strong> {selectedRow.totalPayment}</input>
-            <input className="text-sm text-gray-700 dark:text-gray-300"><strong>Percentage:</strong> {selectedRow.percentage}</input>
-            <input className="text-sm text-gray-700 dark:text-gray-300"><strong>Brokerage: </strong> {selectedRow.brokerage}</input>
-            <input className="text-sm text-gray-700 dark:text-gray-300"><strong>Amount After Brokerage: </strong> {selectedRow.amountAfterBrokerage}</input> */}
-            <button style={{backgroundColor:selectedColor}} onClick={closeModal} className="mt-4 px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-300">Close</button>
+            <button
+              style={{ backgroundColor: selectedColor }}
+              onClick={closeModal}
+              className="mt-4 px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-300"
+            >
+              Close
+            </button>
+            <button
+              onClick={() => updateData(selectedRow._id)}
+              className="mt-4 ml-4 px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-300"
+            >
+              Update
+            </button>
           </div>
         </div>
       )}
