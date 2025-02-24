@@ -83,7 +83,7 @@ const AddEntryincome = ({selectedColor}) => {
         axios.post('https://diamond-be.onrender.com/api/v1/daimond/add-diamond', formData)
             .then((res) => {
 
-                if (res.status == 200 || res.status == 201 || res.status == 204) {                    
+                if (res.status === 200 || res.status === 201 || res.status === 204) {                    
                     toast.success("Data Added Successfully")
                 }
                 setFormData({

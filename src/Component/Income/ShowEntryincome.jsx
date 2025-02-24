@@ -2,6 +2,9 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import Swal from 'sweetalert2';
 import { Calendar } from 'primereact/calendar';
+import { MdDeleteForever } from "react-icons/md"
+import { FaStreetView } from "react-icons/fa";
+
 
 const ShowEntryIncome = ({ selectedColor }) => {
   const [diamondEntry, setDiamondEntry] = useState([]);
@@ -10,7 +13,6 @@ const ShowEntryIncome = ({ selectedColor }) => {
   const [showModal, setShowModal] = useState(false);
   const [selectedRow, setSelectedRow] = useState(null);
   const [dateRange, setDateRange] = useState(null);
-  const [searchTerm, setSearchTerm] = useState('');
   useEffect(() => {
     getEntry();
   }, [dateRange]);
@@ -101,7 +103,7 @@ const ShowEntryIncome = ({ selectedColor }) => {
     const weight = fieldName === 'weight' ? parseFloat(fieldValue) || 0 : parseFloat(selectedRow.weight) || 0;
     const price = fieldName === 'price' ? parseFloat(fieldValue) || 0 : parseFloat(selectedRow.price) || 0;
     const totalPayment = Math.floor(weight * price);
-    
+
     setSelectedRow(prev => ({ ...prev, totalPayment }));
   };
 
@@ -110,7 +112,7 @@ const ShowEntryIncome = ({ selectedColor }) => {
     const brokeragePercentage = parseFloat(percentageValue) || 0;
     const brokerageAmount = Math.floor((totalPayment * brokeragePercentage) / 100);
     const amountAfterBrokerage = totalPayment - brokerageAmount;
-    
+
     // Static 1% deduction after brokerage
     const staticFee = Math.floor(amountAfterBrokerage * 0.01);
     const finalAmount = amountAfterBrokerage - staticFee;
@@ -142,7 +144,7 @@ const ShowEntryIncome = ({ selectedColor }) => {
         Swal.fire('Error!', 'There was an issue updating the entry.', 'error');
         console.error('Error updating entry:', error);
       });
-    }
+  }
 
 
   return (
@@ -208,8 +210,10 @@ const ShowEntryIncome = ({ selectedColor }) => {
                         </td> */}
                         <td className="px-2 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-neutral-500">{ele.amountAfterBrokerage}</td>
                         <td className="px-2 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-neutral-500">
-                          <button onClick={() => openModal(ele)} className="text-blue-600 hover:text-blue-800"><i className="pi pi-list mr-3"></i></button>
-                          <button className="text-blue-600 hover:text-blue-800" onClick={() => deleteEntry(ele._id)}><i className="pi pi-trash mr-3"></i></button>
+                          <button onClick={() => openModal(ele)} className="text-blue-600 hover:text-blue-800"><FaStreetView className='text-xl mr-3' />
+                          </button>
+                          <button className="text-blue-600 hover:text-blue-800" onClick={() => deleteEntry(ele._id)}><MdDeleteForever className='text-xl mr-3' />
+                          </button>
                           {/* <button className="text-blue-600 hover:text-blue-800"><i className="pi pi-pen-to-square"></i></button> */}
                         </td>
                       </tr>

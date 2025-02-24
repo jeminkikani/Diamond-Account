@@ -1,6 +1,8 @@
 import axios from 'axios';
 import { Calendar } from 'primereact/calendar';
 import React, { useEffect, useState } from 'react'
+import { FaStreetView } from 'react-icons/fa';
+import { MdDeleteForever } from 'react-icons/md';
 import Swal from 'sweetalert2';
 
 const ShowEntryOutgoing = ({selectedColor}) => {
@@ -13,7 +15,6 @@ const ShowEntryOutgoing = ({selectedColor}) => {
   const [showModal, setShowModal] = useState(false);
   const [selectedRow, setSelectedRow] = useState(null);
   const [dateRange, setDateRange] = useState(null);
-  const [searchTerm, setSearchTerm] = useState('');
   
   useEffect(() => {
     ShowEntry();
@@ -207,8 +208,8 @@ const ShowEntryOutgoing = ({selectedColor}) => {
                         </td> */}
                         <td className="px-2 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-neutral-500">{ele.amountAfterBrokerage}</td>
                         <td className="px-2 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-neutral-500">
-                          <button onClick={() => openModal(ele)} className="text-blue-600 hover:text-blue-800"><i className="pi pi-list mr-3"></i></button>
-                          <button className="text-blue-600 hover:text-blue-800" onClick={() => deleteEntry(ele._id)}><i className="pi pi-trash mr-3"></i></button>
+                          <button onClick={() => openModal(ele)} className="text-blue-600 hover:text-blue-800"><FaStreetView className='text-xl mr-3'/></button>
+                          <button className="text-blue-600 hover:text-blue-800" onClick={() => deleteEntry(ele._id)}><MdDeleteForever className='text-xl mr-3' /></button>
                           {/* <button className="text-blue-600 hover:text-blue-800"><i className="pi pi-pen-to-square"></i></button> */}
                         </td>
                       </tr>
