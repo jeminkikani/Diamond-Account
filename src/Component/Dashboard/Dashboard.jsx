@@ -102,7 +102,7 @@ const Dashboard = ({selectedColor }) => {
                 </p>
               </div>
               <div className="pt-5 text-center text-3xl font-bold text-gray-600 transition-all duration-300 ">
-                {new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', minimumFractionDigits: 0,  maximumFractionDigits: 0 }).format(total.totalExpense)}
+                {new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', minimumFractionDigits: 0,  maximumFractionDigits: 0 }).format(total.totalExpense || 0)}
               </div>
             </div>
           </div>
