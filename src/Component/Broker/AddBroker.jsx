@@ -13,13 +13,13 @@ const AddBroker = ({selectedColor}) => {
     try {
       if (formData.mobile_no.length !== 10) {
         toast.error("Mobile number must be 10 digits")
-      }else if(formData.name.length == 0){
+      }else if(formData.name.length === 0){
         toast.error("Broker Name Is Requird")
       }else{
 
         axios.post('https://diamond-be.onrender.com/api/v1/broker/add-broker', formData)
           .then((res) => {
-            if (res == 200 || 201) {
+            if (res === 200 || 201) {
               toast.success("Data Added Successfully")
             }          
             // alert('Broker added successfully!');

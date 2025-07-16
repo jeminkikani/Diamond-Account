@@ -13,7 +13,7 @@ const AddExpanse = ({selectedColor}) => {
     try {
       axios.post('https://diamond-be.onrender.com/api/v1/expense/add-expense', formData)
         .then((res) => {
-          if (res == 200 || 201) {
+          if (res === 200 || 201) {
             toast.success("Expense Added Successfully")
           }
           // alert('Broker added successfully!');

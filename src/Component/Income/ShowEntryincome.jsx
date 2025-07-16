@@ -228,25 +228,49 @@ const ShowEntryIncome = ({ selectedColor }) => {
 
               </table>
             </div>
-            <div className="py-1 px-4">
-              <nav className="flex items-center space-x-1" aria-label="Pagination">
-                <button onClick={handlePrevious} disabled={currentPage === 1} className="p-2.5 min-w-[40px] inline-flex justify-center items-center gap-x-2 text-sm rounded-full text-gray-800 hover:bg-neutral-700 hover:text-white dark:focus:bg-neutral-700" aria-label="Previous">
-                  «
-                </button>
-                {Array.from({ length: totalPages }, (_, i) => (
-                  <button style={{ backgroundColor: currentPage === i + 1 ? selectedColor : 'white' }}
-                    key={i + 1}
-                    onClick={() => handlePageChange(i + 1)}
-                    className={`min-w-[40px] flex justify-center items-center text-black py-2.5 text-sm rounded-full ${currentPage === i + 1 ? 'bg-red-600 text-white' : 'hover:text-black focus:bg-red-900 hover:bg-red-900'}`}
-                  >
-                    {i + 1}
-                  </button>
-                ))}
-                <button onClick={handleNext} disabled={currentPage === totalPages} className="p-2.5 min-w-[40px] inline-flex justify-center items-center gap-x-2 text-sm rounded-full text-gray-800 hover:text-white hover:bg-neutral-700 dark:focus:bg-neutral-700" aria-label="Next">
-                  »
-                </button>
-              </nav>
-            </div>
+          <div className="py-1 px-4">
+  <nav className="flex items-center space-x-1" aria-label="Pagination">
+    <button
+      onClick={handlePrevious}
+      disabled={currentPage === 1}
+      className="p-2.5 min-w-[40px] inline-flex justify-center items-center gap-x-2 text-sm rounded-full text-gray-800 hover:bg-neutral-700 hover:text-white"
+      aria-label="Previous"
+    >
+      «
+    </button>
+
+    {Array.from({ length: totalPages }, (_, i) => i + 1)
+      .filter((page) => {
+        // Show only 3 buttons max, centered around current page
+        if (totalPages <= 3) return true;
+
+        const start = Math.max(1, currentPage - 1);
+        const end = Math.min(totalPages, start + 2);
+
+        return page >= start && page <= end;
+      })
+      .map((page) => (
+        <button
+          key={page}
+          onClick={() => handlePageChange(page)}
+          style={{ backgroundColor: currentPage === page ? selectedColor : 'white' }}
+          className={`min-w-[40px] flex justify-center items-center text-black py-2.5 text-sm rounded-full ${currentPage === page ? 'bg-red-600 text-white' : 'hover:text-black focus:bg-red-900 hover:bg-red-900'}`}
+        >
+          {page}
+        </button>
+      ))}
+
+    <button
+      onClick={handleNext}
+      disabled={currentPage === totalPages}
+      className="p-2.5 min-w-[40px] inline-flex justify-center items-center gap-x-2 text-sm rounded-full text-gray-800 hover:text-white hover:bg-neutral-700"
+      aria-label="Next"
+    >
+      »
+    </button>
+  </nav>
+</div>
+
           </div>
         </div>
       </div>
